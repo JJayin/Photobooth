@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { font-family: sans-serif; }
+  img { max-width: 300px; margin: 10px; border: 1px solid #ccc; }
+  .container { display: flex; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+  <h2>Photobooth Designs</h2>
+  <div class="container">
+    <script>
+      for(let i=1; i<=21; i++) {
+        document.write('<div><p>Design ' + i + '</p><img src="file:///Users/jinju/photobooth/photobooth_design/' + i + '.png" /></div>');
+      }
+    </script>
+  </div>
+  <h2>Backgrounds</h2>
+  <div class="container">
+    <script>
+      for(let i=1; i<=4; i++) {
+        document.write('<div><p>Background ' + i + '</p><img src="file:///Users/jinju/photobooth/BACKGROUND/' + i + '.png" /></div>');
+      }
+    </script>
+  </div>
+</body>
+</html>

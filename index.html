@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Web Photobooth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Handjet:wght@400;700&family=Syncopate:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Master Container (Fixed 4:3 Aspect Ratio) -->
+        <div id="app-master-container">
+            <!-- Start Screen -->
+            <div id="start-screen">
+                <div class="start-bg-grid">
+                    <img class="bg-img bg-img-2" src="photobooth/BACKGROUND/THUMNAIL/kangjinju_a_wide_cinematic_long_shot_of_a_bed_placed_on_the_f_201fdb66-1055-4d6b-9c48-1e03521dc62a_2.png" alt="Cliff">
+                    <!-- bg-img-1 is Eye on left -->
+                    <img class="bg-img bg-img-1" src="photobooth/BACKGROUND/THUMNAIL/kangjinju_xtreme_close-up_beauty_editorial_detail_shot_of_a_K_39ebdb85-cdbb-4f63-88b1-7aa9c57d2fb2_0.png" alt="Eye">
+                    <img class="bg-img bg-img-4" src="photobooth/BACKGROUND/THUMNAIL/kangjinju_A_candid_naturally_lit_photograph_of_a_minimal_mode_1a61d7c4-2069-4277-9d79-732e96c72c0e_2.png" alt="Snail">
+                    <!-- bg-img-3 is Pink Hair on right -->
+                    <img class="bg-img bg-img-3" src="photobooth/BACKGROUND/THUMNAIL/kangjinju_extreme_close-up_conceptual_fashion_editorial_portr_86a96d0a-71ff-4a29-8332-a085346d686a_0.png" alt="Pink Hair">
+                </div>
+                <div class="start-content">
+                    <h1 class="start-title">Photo booth<br>for <span class="lovers-text">lovers</span></h1>
+                    <p class="start-prompt">Click to start!</p>
+                </div>
+            </div>
+
+            <!-- Loading Overlay -->
+            <div id="loading-overlay" class="hidden">
+                <div class="loading-content">
+                    <div class="pixel-spinner"></div>
+                    <p class="loading-text">LOADING...</p>
+                </div>
+            </div>
+
+            <!-- Background Layer -->
+            <div id="background-layer"></div>
+
+            <!-- Main Content Wrapper -->
+            <div class="content-wrapper new-workspace">
+            <div id="drag-prompt" class="workspace-text fade-out-on-drop">Drag the frame and place it where you want!</div>
+            
+            <!-- Pixel Action Menu -->
+            <div id="action-menu">
+                <button id="next-save-btn" class="pixel-btn">Next!</button>
+            </div>
+
+            <!-- Drop Zone for Frames -->
+            <div id="drop-zone"></div>
+
+            <!-- Bottom Left: Background Selection -->
+            <div id="bottom-left-controls">
+                <button class="bg-circle-btn" data-bg="photobooth/BACKGROUND/1.png" style="background-color: #ffb6c1;"></button>
+                <button class="bg-circle-btn" data-bg="photobooth/BACKGROUND/2.png" style="background-color: #add8e6;"></button>
+                <button class="bg-circle-btn" data-bg="photobooth/BACKGROUND/3.png" style="background-color: #d3d3d3;"></button>
+                <button class="bg-circle-btn" data-bg="photobooth/BACKGROUND/4.png" style="background: radial-gradient(circle, #ffb6c1, #add8e6);"></button>
+            </div>
+
+            <!-- Bottom Right: Frame Selector -->
+            <div id="bottom-right-controls">
+                <div id="color-changer-text" class="rainbow-text">Click to<br>change the<br>frame color!</div>
+                <div class="frames-container">
+                    <!-- 1x4 Frame -->
+                    <div class="draggable-frame-template frame-1x4" draggable="true" data-type="1x4">
+                        <div class="frame-slot-mini"></div>
+                        <div class="frame-slot-mini"></div>
+                        <div class="frame-slot-mini"></div>
+                        <div class="frame-slot-mini"></div>
+                    </div>
+                    <!-- 2x2 Frame -->
+                    <div class="draggable-frame-template frame-2x2" draggable="true" data-type="2x2">
+                        <div class="frame-row-mini">
+                            <div class="frame-slot-mini"></div>
+                            <div class="frame-slot-mini"></div>
+                        </div>
+                        <div class="frame-row-mini">
+                            <div class="frame-slot-mini"></div>
+                            <div class="frame-slot-mini"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden Camera feed for capturing -->
+            <div class="camera-container" id="camera-container" style="display: none;" data-html2canvas-ignore="true">
+                <video id="video-stream" autoplay playsinline></video>
+                <canvas id="capture-canvas" style="display: none;"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- White flash overlay on click -->
+    <div id="flash-overlay"></div>
+
+    <!-- html2canvas for saving functionality -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
