@@ -405,6 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function captureSlotWithTimer(slot, seconds) {
         return new Promise((resolve) => {
             let count = seconds;
+            let isCaptured = false;
             
             // Ensure absolute children are bound
             slot.style.position = 'relative'; 
@@ -418,6 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
             videoElement.style.height = '100%';
             videoElement.style.objectFit = 'cover';
             videoElement.style.zIndex = '100';
+            videoElement.style.cursor = 'pointer'; // Indicates it's clickable
             slot.appendChild(videoElement);
             videoElement.play(); // Enforce playback
             
@@ -431,6 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
             countdownOverlay.style.fontFamily = 'var(--font-pixel)';
             countdownOverlay.style.zIndex = '10000';
             countdownOverlay.innerText = `TIME : ${count}`;
+            countdownOverlay.style.pointerEvents = 'none'; // so clicks pass through to video
             
             // Apply outline via stroke to match the aesthetic (prevents shadow overlap)
             countdownOverlay.style.webkitTextStroke = '1.5px white';
@@ -438,20 +441,32 @@ document.addEventListener('DOMContentLoaded', () => {
             
             appMasterContainer.appendChild(countdownOverlay);
             
+            function doCapture() {
+                if (isCaptured) return;
+                isCaptured = true;
+                
+                clearInterval(interval);
+                countdownOverlay.remove();
+                videoElement.removeEventListener('click', doCapture);
+                videoElement.style.cursor = '';
+                
+                // Put videoElement back to its hidden container before overwriting innerHTML
+                document.getElementById('camera-container').appendChild(videoElement);
+                
+                captureImgToSlot(slot).then(() => {
+                    setTimeout(() => resolve(), 500); // 0.5s pause before next frame
+                });
+            }
+            
+            videoElement.addEventListener('click', doCapture);
+            
             const interval = setInterval(() => {
+                if (isCaptured) return;
                 count--;
                 if (count > 0) {
                     countdownOverlay.innerText = `TIME : ${count}`;
                 } else {
-                    clearInterval(interval);
-                    countdownOverlay.remove();
-                    
-                    // Put videoElement back to its hidden container before overwriting innerHTML
-                    document.getElementById('camera-container').appendChild(videoElement);
-                    
-                    captureImgToSlot(slot).then(() => {
-                        setTimeout(() => resolve(), 500); // 0.5s pause before next frame
-                    });
+                    doCapture();
                 }
             }, 1000); // 1000ms = 1 second
         });
