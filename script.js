@@ -173,10 +173,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupColorChanger() {
+        const colorPicker = document.getElementById('frame-color-picker');
+        
         colorChangerText.addEventListener('click', () => {
-            currentColorIndex = (currentColorIndex + 1) % frameColors.length;
-            const newColor = frameColors[currentColorIndex];
-            document.documentElement.style.setProperty('--frame-color', newColor);
+            colorPicker.click();
+        });
+        
+        colorPicker.addEventListener('input', (e) => {
+            document.documentElement.style.setProperty('--frame-color', e.target.value);
         });
     }
 
