@@ -22,6 +22,7 @@ body, html {
     overflow: hidden;
     background-color: var(--primary-bg);
     color: #333;
+    zoom: 0.9;
 }
 
 /* Start Screen (Bounded by 4:3) */
@@ -213,8 +214,8 @@ body, html {
 
 #app-master-container {
     position: relative;
-    width: 95vw;
-    max-width: calc(95vh * 4 / 3);
+    width: 90%;
+    max-width: 1200px;
     aspect-ratio: 4 / 3;
     background-color: #000;
     overflow: hidden;
