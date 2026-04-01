@@ -82,10 +82,9 @@
 
             <!-- Bottom Right: Frame Selector -->
             <div id="bottom-right-controls" class="hidden-during-capture">
-                <div id="color-changer-text" class="rainbow-text" style="position: relative;">
-                    <input type="color" id="frame-color-picker" value="#ffb6c1" style="position: absolute; right: 120%; top: 50%; opacity: 0; pointer-events: none; width: 10px; height: 10px; border: none; padding: 0;">
-                    Click to<br>change the<br>frame color!
-                </div>
+                <!-- Position hidden input at center of screen so native color dialog doesn't block the bottom right UI -->
+                <input type="color" id="frame-color-picker" value="#ffb6c1" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0; pointer-events: none; width: 0; height: 0; border: none; padding: 0;">
+                <div id="color-changer-text" class="rainbow-text">Click to<br>change the<br>frame color!</div>
                 <div class="frames-container">
                     <!-- 1x4 Frame -->
                     <div class="draggable-frame-template frame-1x4" draggable="true" data-type="1x4">
