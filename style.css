@@ -445,6 +445,8 @@ html {
 
 .draggable-frame-template {
     background-color: var(--frame-color);
+    background-image: url('noise.png');
+    background-repeat: repeat;
     cursor: grab;
     display: flex;
     transition: transform 0.2s, background-color 0.3s;
@@ -548,6 +550,8 @@ html {
 .placed-frame {
     position: absolute;
     background-color: var(--frame-color);
+    background-image: url('noise.png');
+    background-repeat: repeat;
     pointer-events: auto;
     cursor: move;
     z-index: 15;
