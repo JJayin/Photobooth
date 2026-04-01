@@ -213,8 +213,8 @@ body, html {
 
 #app-master-container {
     position: relative;
-    width: 90vw;
-    max-width: calc(90vh * 4 / 3);
+    width: 95vw;
+    max-width: calc(95vh * 4 / 3);
     aspect-ratio: 4 / 3;
     background-color: #000;
     overflow: hidden;
