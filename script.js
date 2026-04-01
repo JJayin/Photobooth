@@ -439,7 +439,24 @@ document.addEventListener('DOMContentLoaded', () => {
             countdownOverlay.style.webkitTextStroke = '1.5px white';
             countdownOverlay.style.paintOrder = 'stroke fill';
             
+            const instructionOverlay = document.createElement('div');
+            instructionOverlay.style.position = 'absolute';
+            instructionOverlay.style.top = '40px'; 
+            instructionOverlay.style.left = '50%';
+            instructionOverlay.style.transform = 'translateX(-50%)';
+            instructionOverlay.style.fontSize = '2.2rem'; 
+            instructionOverlay.style.color = '#54DF41';
+            instructionOverlay.style.fontFamily = 'var(--font-pixel)';
+            instructionOverlay.style.zIndex = '10000';
+            instructionOverlay.style.whiteSpace = 'nowrap';
+            instructionOverlay.innerText = "Click the frame to take a photo immediately!";
+            instructionOverlay.style.pointerEvents = 'none';
+            instructionOverlay.style.webkitTextStroke = '1px white';
+            instructionOverlay.style.paintOrder = 'stroke fill';
+            instructionOverlay.style.animation = 'floatPrompt 1.2s ease-in-out infinite alternate';
+            
             appMasterContainer.appendChild(countdownOverlay);
+            appMasterContainer.appendChild(instructionOverlay);
             
             function doCapture() {
                 if (isCaptured) return;
@@ -447,6 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 clearInterval(interval);
                 countdownOverlay.remove();
+                instructionOverlay.remove();
                 videoElement.removeEventListener('click', doCapture);
                 videoElement.style.cursor = '';
                 
