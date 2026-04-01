@@ -273,6 +273,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Add Rotate Handles
         addRotateHandles(frame);
+        
+        // Add Resize Handle
+        addResizeHandle(frame);
 
         makeFrameMovable(frame);
         dropZone.appendChild(frame);
@@ -332,12 +335,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const scale = appMasterContainer.getBoundingClientRect().width / appMasterContainer.offsetWidth;
                 const dx = (ev.clientX - initialX) / scale;
                 const dy = (ev.clientY - initialY) / scale;
-                const dist = Math.max(dx, dy);
+                
+                // Use the larger of the two deltas to maintain aspect ratio smoothly
+                const dist = Math.abs(dx) > Math.abs(dy) ? dx : dy * (initialWidth / initialHeight);
                 
                 let newWidth = initialWidth + dist;
-                let newHeight = initialHeight + dist;
+                let newHeight = initialHeight + (dist * (initialHeight / initialWidth));
                 
-                if (newWidth > 30 && newHeight > 30) {
+                if (newWidth > 50 && newHeight > 50) {
                     element.style.width = `${newWidth}px`;
                     element.style.height = `${newHeight}px`;
                 }
