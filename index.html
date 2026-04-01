@@ -11,6 +11,8 @@
 </head>
 <body>
     <div id="app-container">
+        <!-- Hidden color picker extracted out of transformed containers to prevent rendering at huge sizes -->
+        <input type="color" id="frame-color-picker" value="#ffb6c1" style="position: absolute; bottom: 30px; left: 35%; transform: translateX(-50%); opacity: 0; pointer-events: none; width: 1px; height: 1px; border: none; padding: 0; z-index: 9999;">
         <!-- Master Container (Fixed 4:3 Aspect Ratio) -->
         <div id="app-master-container">
             <!-- Start Screen -->
@@ -42,8 +44,6 @@
 
             <!-- Main Content Wrapper -->
             <div class="content-wrapper new-workspace">
-            <!-- Hidden color picker firmly relocated to bottom-left/center to prevent overlap with right-side text -->
-            <input type="color" id="frame-color-picker" value="#ffb6c1" style="position: absolute; bottom: 30px; left: 35%; transform: translateX(-50%); opacity: 0; pointer-events: none; width: 1px; height: 1px; border: none; padding: 0;">
             <!-- Sticker Panel (Left) -->
             <div id="sticker-panel" class="hidden">
                 <div class="sticker-header">
