@@ -74,7 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderStickerConcept() {
         if (conceptsList.length === 0 || !conceptTitle || !stickerGrid) return;
         const concept = conceptsList[currentConceptIndex];
-        conceptTitle.innerText = concept.name;
+        
+        const displayName = concept.name.replace(/_and_/g, ' & ').replace(/_/g, ' ');
+        conceptTitle.innerText = displayName;
+        
         stickerGrid.innerHTML = '';
         
         concept.stickers.forEach(url => {
