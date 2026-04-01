@@ -629,3 +629,181 @@ body, html {
     opacity: 1;
     transition: none;
 }
+
+/* --- Sticker Panel Styles --- */
+#sticker-panel {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    bottom: 120px; /* leaves room for bottom-left background selection */
+    width: 280px;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    z-index: 20;
+    pointer-events: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s;
+}
+
+.sticker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+#current-concept-title {
+    font-family: var(--font-pixel);
+    font-size: 1.5rem;
+    color: #fff;
+    text-align: center;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.8);
+    flex: 1;
+    margin: 0;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.8);
+    transition: transform 0.2s;
+    padding: 0 10px;
+}
+
+.nav-btn:hover {
+    transform: scale(1.2);
+    color: #54df41;
+}
+
+#sticker-grid {
+    flex: 1;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: max-content;
+    gap: 10px;
+    padding-right: 5px; /* for scrollbar */
+}
+
+/* Custom Scrollbar for sticker grid */
+#sticker-grid::-webkit-scrollbar {
+    width: 6px;
+}
+#sticker-grid::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+#sticker-grid::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.5);
+    border-radius: 10px;
+}
+#sticker-grid::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.8);
+}
+
+.sticker-item {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: contain;
+    cursor: grab;
+    transition: transform 0.2s;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+}
+
+.sticker-item:active {
+    cursor: grabbing;
+}
+
+.sticker-item:hover {
+    transform: scale(1.1);
+}
+
+.placed-sticker {
+    position: absolute;
+    pointer-events: auto;
+    cursor: move;
+    z-index: 25; /* higher than placed-frame */
+    /* width/height set dynamically based on image size or default */
+}
+
+.placed-sticker img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none; /* Let drag events hit the parent container */
+}
+
+.placed-sticker.locked {
+    cursor: default;
+}
+
+.placed-sticker.locked .delete-btn,
+.placed-sticker.locked .rotate-handle,
+.placed-sticker.locked .resize-handle {
+    display: none !important;
+}
+
+.resize-handle {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    z-index: 20;
+    bottom: -12px;
+    right: -12px;
+    cursor: nwse-resize;
+}
+.resize-handle::after {
+    content: '';
+    position: absolute;
+    top: 6px; left: 6px; right: 6px; bottom: 6px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: opacity 0.2s, background-color 0.2s;
+}
+.placed-sticker:hover .resize-handle::after {
+    opacity: 1;
+}
+.resize-handle:hover::after {
+    background-color: #feca57;
+    transform: scale(1.1);
+}
+
+/* Fix delete button for sticker */
+.placed-sticker .delete-btn {
+    z-index: 30;
+}
+
+/* --- Trash Can Styles --- */
+#trash-can {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 71, 87, 0.8);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 50;
+    transition: transform 0.2s, background-color 0.2s;
+    pointer-events: none; /* Let drag elements hover above without blocking */
+}
+
+#trash-can.drag-over {
+    transform: scale(1.2);
+    background-color: rgba(255, 107, 129, 1);
+}

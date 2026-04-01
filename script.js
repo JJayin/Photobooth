@@ -13,13 +13,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropZone = document.getElementById('drop-zone');
     const dragPrompt = document.getElementById('drag-prompt');
     const nextSaveBtn = document.getElementById('next-save-btn');
+    const restartBtn = document.getElementById('restart-btn');
     const startScreen = document.getElementById('start-screen');
     const loadingOverlay = document.getElementById('loading-overlay');
     const cameraContainer = document.getElementById('camera-container');
     const flashOverlay = document.getElementById('flash-overlay');
+    
+    // Sticker UI Elements
+    const stickerPanel = document.getElementById('sticker-panel');
+    const prevConceptBtn = document.getElementById('prev-concept-btn');
+    const nextConceptBtn = document.getElementById('next-concept-btn');
+    const conceptTitle = document.getElementById('current-concept-title');
+    const stickerGrid = document.getElementById('sticker-grid');
 
     const frameColors = ['#ffb6c1', '#add8e6', '#e6e6fa', '#f5f5dc', '#888888', '#d3d3d3'];
     let currentColorIndex = 0;
+    
+    // Group stickers by concept
+    const conceptsMap = {};
+    if (typeof RAW_STICKERS !== 'undefined') {
+        RAW_STICKERS.forEach(path => {
+            if (path.includes('레이어-0.png') || path.includes('레이어-0.png')) return;
+            const parts = path.split('/');
+            if (parts.length >= 4) {
+                const concept = parts[2];
+                if (!conceptsMap[concept]) conceptsMap[concept] = [];
+                conceptsMap[concept].push(path);
+            }
+        });
+    }
+    const conceptsList = Object.keys(conceptsMap).map(k => ({ name: k, stickers: conceptsMap[k] }));
+    let currentConceptIndex = 0;
     
     let cameraStream = null;
 
@@ -27,9 +51,50 @@ document.addEventListener('DOMContentLoaded', () => {
         setupBackgroundButtons();
         setupColorChanger();
         setupDragAndDrop();
+        setupStickers();
         
         // Initial Background
         await setBackground('photobooth/BACKGROUND/1.png');
+    }
+    
+    function setupStickers() {
+        if (prevConceptBtn && nextConceptBtn) {
+            prevConceptBtn.addEventListener('click', () => {
+                currentConceptIndex = (currentConceptIndex > 0) ? currentConceptIndex - 1 : conceptsList.length - 1;
+                renderStickerConcept();
+            });
+            nextConceptBtn.addEventListener('click', () => {
+                currentConceptIndex = (currentConceptIndex + 1) % conceptsList.length;
+                renderStickerConcept();
+            });
+        }
+        renderStickerConcept();
+    }
+    
+    function renderStickerConcept() {
+        if (conceptsList.length === 0 || !conceptTitle || !stickerGrid) return;
+        const concept = conceptsList[currentConceptIndex];
+        conceptTitle.innerText = concept.name;
+        stickerGrid.innerHTML = '';
+        
+        concept.stickers.forEach(url => {
+            const img = document.createElement('img');
+            img.src = url;
+            img.className = 'sticker-item';
+            img.draggable = true;
+            img.dataset.url = url;
+            
+            img.addEventListener('dragstart', (e) => {
+                // Ensure dragstart data is set
+                e.dataTransfer.setData('text/plain', 'sticker');
+                e.dataTransfer.setData('sticker-url', url);
+                
+                // For cross-browser, some require an effectAllowed
+                e.dataTransfer.effectAllowed = 'copyMove';
+            });
+            
+            stickerGrid.appendChild(img);
+        });
     }
 
     async function setBackground(bgUrl) {
@@ -103,14 +168,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         dropZone.addEventListener('drop', (e) => {
             e.preventDefault();
-            if (!draggedType) return;
-            
-            // Hide drag prompt
             dragPrompt.classList.add('hidden');
-
+            
             const coords = getRelativeCoords(e.clientX, e.clientY);
-            placeFrame(draggedType, coords.x, coords.y);
-            draggedType = null;
+            const dtType = e.dataTransfer.getData('text/plain');
+            
+            if (dtType === 'sticker') {
+                const url = e.dataTransfer.getData('sticker-url');
+                placeSticker(url, coords.x, coords.y);
+            } else if (draggedType) {
+                placeFrame(draggedType, coords.x, coords.y);
+                draggedType = null;
+            }
         });
     }
 
@@ -162,8 +231,8 @@ document.addEventListener('DOMContentLoaded', () => {
             e.stopPropagation();
             frame.remove();
             
-            // Show drag prompt again if no frames are left
-            if (document.querySelectorAll('.placed-frame').length === 0) {
+            // Show drag prompt again if no frames/stickers are left
+            if (document.querySelectorAll('.placed-frame, .placed-sticker').length === 0) {
                 dragPrompt.classList.remove('hidden');
             }
         });
@@ -174,6 +243,80 @@ document.addEventListener('DOMContentLoaded', () => {
 
         makeFrameMovable(frame);
         dropZone.appendChild(frame);
+    }
+
+    function placeSticker(url, relativeX, relativeY) {
+        const sticker = document.createElement('div');
+        sticker.className = 'placed-sticker';
+        
+        const defaultSize = 100;
+        sticker.style.width = `${defaultSize}px`;
+        sticker.style.height = `${defaultSize}px`;
+        
+        const left = relativeX - (defaultSize / 2);
+        const top = relativeY - (defaultSize / 2);
+        sticker.style.left = `${left}px`;
+        sticker.style.top = `${top}px`;
+        
+        const img = document.createElement('img');
+        img.src = url;
+        img.draggable = false;
+        sticker.appendChild(img);
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>';
+        deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sticker.remove();
+            if (document.querySelectorAll('.placed-frame, .placed-sticker').length === 0) {
+                dragPrompt.classList.remove('hidden');
+            }
+        });
+        sticker.appendChild(deleteBtn);
+
+        addRotateHandles(sticker);
+        addResizeHandle(sticker);
+        makeFrameMovable(sticker);
+
+        dropZone.appendChild(sticker);
+    }
+
+    function addResizeHandle(element) {
+        const handle = document.createElement('div');
+        handle.className = 'resize-handle';
+        element.appendChild(handle);
+        
+        handle.addEventListener('mousedown', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const initialWidth = element.offsetWidth;
+            const initialHeight = element.offsetHeight;
+            const initialX = e.clientX;
+            const initialY = e.clientY;
+            
+            function onMouseMove(ev) {
+                const dx = ev.clientX - initialX;
+                const dy = ev.clientY - initialY;
+                const dist = Math.max(dx, dy);
+                
+                let newWidth = initialWidth + dist;
+                let newHeight = initialHeight + dist;
+                
+                if (newWidth > 30 && newHeight > 30) {
+                    element.style.width = `${newWidth}px`;
+                    element.style.height = `${newHeight}px`;
+                }
+            }
+            
+            function onMouseUp() {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
     }
 
     function addRotateHandles(frame) {
@@ -353,10 +496,23 @@ document.addEventListener('DOMContentLoaded', () => {
             document.addEventListener('mouseup', dragEnd);
             document.addEventListener('mousemove', drag);
 
-            function dragEnd() {
+            function dragEnd(ev) {
                 isDragging = false;
                 document.removeEventListener('mouseup', dragEnd);
                 document.removeEventListener('mousemove', drag);
+                
+                const trashCan = document.getElementById('trash-can');
+                if (trashCan && !trashCan.classList.contains('hidden') && ev) {
+                    trashCan.classList.remove('drag-over');
+                    const rect = trashCan.getBoundingClientRect();
+                    if (ev.clientX >= rect.left && ev.clientX <= rect.right &&
+                        ev.clientY >= rect.top && ev.clientY <= rect.bottom) {
+                        frame.remove();
+                        if (document.querySelectorAll('.placed-frame, .placed-sticker').length === 0) {
+                            dragPrompt.classList.remove('hidden');
+                        }
+                    }
+                }
             }
 
             function drag(ev) {
@@ -365,17 +521,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     const dx = ev.clientX - initialX;
                     const dy = ev.clientY - initialY;
                     
-                    // Note: dx/dy are screen-space deltas, but since appMasterContainer 
-                    // and its children scale together, we can apply them directly 
-                    // if we account for the current scale.
-                    // However, html2canvas and standard CSS positioning usually work best 
-                    // with the raw pixels if the container isn't transform-scaled.
-                    // Since we use aspect-ratio, we should check if we need to adjust for scale.
                     const rect = appMasterContainer.getBoundingClientRect();
                     const scale = rect.width / appMasterContainer.offsetWidth;
                     
                     frame.style.left = `${left + (dx / scale)}px`;
                     frame.style.top = `${top + (dy / scale)}px`;
+                    
+                    const trashCan = document.getElementById('trash-can');
+                    if (trashCan && !trashCan.classList.contains('hidden')) {
+                        const tcRect = trashCan.getBoundingClientRect();
+                        if (ev.clientX >= tcRect.left && ev.clientX <= tcRect.right &&
+                            ev.clientY >= tcRect.top && ev.clientY <= tcRect.bottom) {
+                            trashCan.classList.add('drag-over');
+                        } else {
+                            trashCan.classList.remove('drag-over');
+                        }
+                    }
                 }
             }
         }
@@ -383,6 +544,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function startCamera() {
         try {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(t => t.stop());
+            }
             cameraStream = await navigator.mediaDevices.getUserMedia({ 
                 video: { width: 1280, height: 720, facingMode: "user" }, 
                 audio: false 
@@ -413,10 +577,10 @@ document.addEventListener('DOMContentLoaded', () => {
         nextSaveBtn.disabled = true;
         nextSaveBtn.style.opacity = '0.5';
         
-        // Lock frames and hide configuration controls during shooting
+        // Lock frames during shooting
         frames.forEach(f => f.classList.add('locked'));
-        document.getElementById('bottom-left-controls').style.display = 'none';
-        document.getElementById('bottom-right-controls').style.display = 'none';
+        
+        document.querySelectorAll('.hidden-during-capture').forEach(el => el.style.display = 'none');
         
         const allSlots = document.querySelectorAll('.placed-frame .frame-slot');
         
@@ -425,12 +589,51 @@ document.addEventListener('DOMContentLoaded', () => {
             await captureSlotWithTimer(allSlots[i], 10);
         }
         
-        showToast("All photos captured! You can now save your collage.");
+        showToast("All photos captured! Now decorate with stickers.");
         nextSaveBtn.innerText = 'Save!';
         nextSaveBtn.disabled = false;
         nextSaveBtn.style.opacity = '1';
+        
+        // Show the sticker panel and trash can for decoration phase
+        const stickerPanel = document.getElementById('sticker-panel');
+        if (stickerPanel) {
+            stickerPanel.classList.remove('hidden');
+        }
+        
+        const trashCan = document.getElementById('trash-can');
+        if (trashCan) {
+            trashCan.classList.remove('hidden');
+        }
+        
+        if (restartBtn) {
+            restartBtn.classList.remove('hidden');
+        }
     });
     
+    if (restartBtn) {
+        restartBtn.addEventListener('click', () => {
+            startScreen.classList.remove('hidden');
+            dropZone.innerHTML = '';
+            
+            dragPrompt.classList.remove('hidden');
+            nextSaveBtn.innerText = 'Next!';
+            
+            restartBtn.classList.add('hidden');
+            
+            const stickerPanel = document.getElementById('sticker-panel');
+            if (stickerPanel) {
+                stickerPanel.classList.add('hidden');
+            }
+            
+            const trashCan = document.getElementById('trash-can');
+            if (trashCan) {
+                trashCan.classList.add('hidden');
+            }
+            
+            document.querySelectorAll('.hidden-during-capture').forEach(el => el.style.display = '');
+        });
+    }
+
     function saveCollage() {
         console.log("Starting collage save process...");
         if (window.location.protocol === 'file:') {
@@ -439,13 +642,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Hide controls temporarily so they aren't saved in collage
-        const blc = document.getElementById('bottom-left-controls');
-        const brc = document.getElementById('bottom-right-controls');
         const am = document.getElementById('action-menu');
+        const stickerPanel = document.getElementById('sticker-panel');
+        const trashCan = document.getElementById('trash-can');
         
-        blc.style.opacity = '0';
-        brc.style.opacity = '0';
-        am.style.opacity = '0';
+        if (stickerPanel) stickerPanel.style.opacity = '0';
+        if (am) am.style.opacity = '0';
+        if (restartBtn) restartBtn.style.opacity = '0';
+        if (trashCan) trashCan.style.opacity = '0';
         
         showToast("Saving...");
         
@@ -461,9 +665,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log("Canvas generated successfully. Size:", canvas.width, "x", canvas.height);
                 
                 // Restore controls
-                blc.style.opacity = '1';
-                brc.style.opacity = '1';
-                am.style.opacity = '1';
+                if (stickerPanel) stickerPanel.style.opacity = '1';
+                if (am) am.style.opacity = '1';
+                if (restartBtn) restartBtn.style.opacity = '1';
+                if (trashCan) trashCan.style.opacity = '1';
                 
                 try {
                     const dataUrl = canvas.toDataURL('image/png');
@@ -491,9 +696,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }).catch(err => {
                 console.error("Error generating collage with html2canvas:", err);
                 // restore opacity
-                blc.style.opacity = '1';
-                brc.style.opacity = '1';
-                am.style.opacity = '1';
+                if (stickerPanel) stickerPanel.style.opacity = '1';
+                if (am) am.style.opacity = '1';
+                if (restartBtn) restartBtn.style.opacity = '1';
+                if (trashCan) trashCan.style.opacity = '1';
                 showToast("❌ Error rendering collage.");
             });
         }, 500); 
