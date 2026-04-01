@@ -42,7 +42,7 @@ const RAW_STICKERS = [
   "photobooth/Sticker/Kitch_and_Girlish/Kitch_and_Girlish_041.png",
   "photobooth/Sticker/Kitch_and_Girlish/Kitch_and_Girlish_042.png",
   "photobooth/Sticker/Kitch_and_Girlish/Kitch_and_Girlish_043.png",
-  "photobooth/Sticker/Kitch_and_Girlish/Kitch_and_Girlish_044.jpg",
+
   "photobooth/Sticker/Metalic/Metalic_001.png",
   "photobooth/Sticker/Metalic/Metalic_002.png",
   "photobooth/Sticker/Metalic/Metalic_003.png",
@@ -79,7 +79,7 @@ const RAW_STICKERS = [
   "photobooth/Sticker/Metalic/Metalic_034.png",
   "photobooth/Sticker/Metalic/Metalic_035.png",
   "photobooth/Sticker/Metalic/Metalic_036.png",
-  "photobooth/Sticker/Metalic/Metalic_037.jpg",
+
   "photobooth/Sticker/Minimal/Minimal_001.png",
   "photobooth/Sticker/Minimal/Minimal_002.png",
   "photobooth/Sticker/Minimal/Minimal_003.png",
@@ -134,7 +134,7 @@ const RAW_STICKERS = [
   "photobooth/Sticker/Minimal/Minimal_052.png",
   "photobooth/Sticker/Minimal/Minimal_053.png",
   "photobooth/Sticker/Minimal/Minimal_054.png",
-  "photobooth/Sticker/Minimal/Minimal_055.jpg",
+
   "photobooth/Sticker/Weird_and_Dreamy/Weird_and_Dreamy_001.png",
   "photobooth/Sticker/Weird_and_Dreamy/Weird_and_Dreamy_002.png",
   "photobooth/Sticker/Weird_and_Dreamy/Weird_and_Dreamy_003.png",
@@ -172,5 +172,5 @@ const RAW_STICKERS = [
   "photobooth/Sticker/Weird_and_Dreamy/Weird_and_Dreamy_035.png",
   "photobooth/Sticker/Weird_and_Dreamy/Weird_and_Dreamy_036.png",
   "photobooth/Sticker/Weird_and_Dreamy/Weird_and_Dreamy_037.png",
-  "photobooth/Sticker/Weird_and_Dreamy/Weird_and_Dreamy_038.jpg",
+
 ];
