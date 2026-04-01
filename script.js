@@ -445,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
             instructionOverlay.style.left = '50%';
             instructionOverlay.style.transform = 'translateX(-50%)';
             instructionOverlay.style.fontSize = '2.2rem'; 
-            instructionOverlay.style.color = '#54DF41';
+            instructionOverlay.style.color = '#262626';
             instructionOverlay.style.fontFamily = 'var(--font-pixel)';
             instructionOverlay.style.zIndex = '10000';
             instructionOverlay.style.whiteSpace = 'nowrap';
@@ -453,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
             instructionOverlay.style.pointerEvents = 'none';
             instructionOverlay.style.webkitTextStroke = '1px white';
             instructionOverlay.style.paintOrder = 'stroke fill';
-            instructionOverlay.style.animation = 'floatPrompt 1.2s ease-in-out infinite alternate';
+            instructionOverlay.style.animation = 'floatUpCenter 1.2s ease-in-out infinite alternate';
             
             appMasterContainer.appendChild(countdownOverlay);
             appMasterContainer.appendChild(instructionOverlay);
