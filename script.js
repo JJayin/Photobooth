@@ -175,8 +175,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupColorChanger() {
         const colorPicker = document.getElementById('frame-color-picker');
         
-        colorChangerText.addEventListener('click', () => {
-            colorPicker.click();
+        colorChangerText.addEventListener('click', (e) => {
+            e.preventDefault();
+            try {
+                if ('showPicker' in HTMLInputElement.prototype) {
+                    colorPicker.showPicker();
+                } else {
+                    colorPicker.click();
+                }
+            } catch (err) {
+                // Ignore InvalidStateError thrown when the picker is already showing.
+                // Doing nothing allows the browser to close the popup naturally.
+            }
         });
         
         colorPicker.addEventListener('input', (e) => {
