@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const windowRatio = window.innerWidth / window.innerHeight;
         
         let scale = 1;
-        const targetW = window.innerWidth * 0.95;
-        const targetH = window.innerHeight * 0.95;
+        const targetW = window.innerWidth;
+        const targetH = window.innerHeight;
         
         if (windowRatio > containerRatio) {
             scale = targetH / 900;
@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
             scale = targetW / 1200;
         }
         
-        if (scale > 1.2) scale = 1.2; 
         document.body.style.zoom = scale;
     }
 
