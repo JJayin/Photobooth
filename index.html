@@ -42,6 +42,8 @@
 
             <!-- Main Content Wrapper -->
             <div class="content-wrapper new-workspace">
+            <!-- Hidden color picker firmly relocated to top-center of the screen -->
+            <input type="color" id="frame-color-picker" value="#ffb6c1" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); opacity: 0; pointer-events: none; width: 1px; height: 1px; border: none; padding: 0;">
             <!-- Sticker Panel (Left) -->
             <div id="sticker-panel" class="hidden">
                 <div class="sticker-header">
@@ -82,8 +84,6 @@
 
             <!-- Bottom Right: Frame Selector -->
             <div id="bottom-right-controls" class="hidden-during-capture">
-                <!-- Position hidden input at center of screen so native color dialog doesn't block the bottom right UI -->
-                <input type="color" id="frame-color-picker" value="#ffb6c1" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0; pointer-events: none; width: 0; height: 0; border: none; padding: 0;">
                 <div id="color-changer-text" class="rainbow-text">Click to<br>change the<br>frame color!</div>
                 <div class="frames-container">
                     <!-- 1x4 Frame -->
