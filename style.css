@@ -15,7 +15,8 @@
     padding: 0;
 }
 
-body, html {
+body,
+html {
     width: 100%;
     height: 100%;
     font-family: var(--font-body);
@@ -31,7 +32,8 @@ body, html {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #e6e6e6; /* Light gray background */
+    background-color: #e6e6e6;
+    /* Light gray background */
     z-index: 1000;
     display: flex;
     justify-content: center;
@@ -55,7 +57,8 @@ body, html {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(230, 230, 230, 0.9); /* Matching start screen gray */
+    background-color: rgba(230, 230, 230, 0.9);
+    /* Matching start screen gray */
     z-index: 2000;
     display: flex;
     justify-content: center;
@@ -79,11 +82,25 @@ body, html {
 }
 
 @keyframes pixel-spin {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(90deg); }
-    50% { transform: rotate(180deg); }
-    75% { transform: rotate(270deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(90deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    75% {
+        transform: rotate(270deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .loading-text {
@@ -110,7 +127,8 @@ body, html {
     box-shadow: none;
 }
 
-.bg-img-1 { /* Eye */
+.bg-img-1 {
+    /* Eye */
     top: 13%;
     left: 0;
     width: 44%;
@@ -118,7 +136,8 @@ body, html {
     z-index: 1;
 }
 
-.bg-img-2 { /* Cliff */
+.bg-img-2 {
+    /* Cliff */
     top: 0;
     left: 44%;
     width: 28%;
@@ -126,7 +145,8 @@ body, html {
     z-index: 2;
 }
 
-.bg-img-3 { /* Pink hair */
+.bg-img-3 {
+    /* Pink hair */
     top: 13%;
     right: 0;
     width: 32%;
@@ -134,7 +154,8 @@ body, html {
     z-index: 3;
 }
 
-.bg-img-4 { /* Snail */
+.bg-img-4 {
+    /* Snail */
     top: 46%;
     left: 21%;
     width: 31%;
@@ -147,7 +168,8 @@ body, html {
     z-index: 10;
     width: 100%;
     height: 100%;
-    pointer-events: auto; /* Changed from none to allow hover */
+    pointer-events: auto;
+    /* Changed from none to allow hover */
 }
 
 .start-title {
@@ -197,8 +219,15 @@ body, html {
 }
 
 @keyframes floatPrompt {
-    0% { transform: translateX(-50%) translateY(0); color: #54DF41; }
-    100% { transform: translateX(-50%) translateY(-10px); color: #40c030; }
+    0% {
+        transform: translateX(-50%) translateY(0);
+        color: #54DF41;
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(-10px);
+        color: #40c030;
+    }
 }
 
 #app-container {
@@ -218,7 +247,7 @@ body, html {
     aspect-ratio: 4 / 3;
     background-color: #000;
     overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     z-index: 5;
 }
 
@@ -242,14 +271,15 @@ body, html {
     z-index: 2;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Let clicks pass to background drop-zone where needed */
+    pointer-events: none;
+    /* Let clicks pass to background drop-zone where needed */
 }
 
 /* Center Prompt */
 .workspace-text {
     font-family: var(--font-pixel);
     color: white;
-    text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
 }
 
 #drag-prompt {
@@ -329,11 +359,11 @@ body, html {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    border: 3px solid rgba(255,255,255,0.8);
+    border: 3px solid rgba(255, 255, 255, 0.8);
     cursor: pointer;
     background-size: cover;
     background-position: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s, border-color 0.2s;
 }
 
@@ -360,24 +390,46 @@ body, html {
     text-align: right;
     cursor: pointer;
     animation: rainbow 3s linear infinite, floatText 2s ease-in-out infinite alternate;
-    text-shadow: 1px 1px 0px rgba(0,0,0,0.8);
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.8);
     line-height: 1.1;
     margin-bottom: 20px;
     color: #ff6b6b;
 }
 
 @keyframes rainbow {
-    0% { color: #ff6b6b; }
-    20% { color: #feca57; }
-    40% { color: #48dbfb; }
-    60% { color: #ff9ff3; }
-    80% { color: #54df41; }
-    100% { color: #ff6b6b; }
+    0% {
+        color: #ff6b6b;
+    }
+
+    20% {
+        color: #feca57;
+    }
+
+    40% {
+        color: #48dbfb;
+    }
+
+    60% {
+        color: #ff9ff3;
+    }
+
+    80% {
+        color: #54df41;
+    }
+
+    100% {
+        color: #ff6b6b;
+    }
 }
 
 @keyframes floatText {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-12px); }
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-12px);
+    }
 }
 
 .frames-container {
@@ -466,8 +518,15 @@ body, html {
 }
 
 @keyframes popIn {
-    0% { transform: scale(0.8); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 /* Drop Zone & Actual Dragged Frames */
@@ -561,7 +620,7 @@ body, html {
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.2s ease, transform 0.2s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     z-index: 20;
 }
 
@@ -583,17 +642,31 @@ body, html {
     cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>') 14 14, alias;
 }
 
-.rotate-handle.top-left { top: -15px; left: -15px; }
-.rotate-handle.bottom-left { bottom: -15px; left: -15px; }
-.rotate-handle.bottom-right { bottom: -15px; right: -15px; }
+.rotate-handle.top-left {
+    top: -15px;
+    left: -15px;
+}
+
+.rotate-handle.bottom-left {
+    bottom: -15px;
+    left: -15px;
+}
+
+.rotate-handle.bottom-right {
+    bottom: -15px;
+    right: -15px;
+}
 
 .rotate-handle::after {
     content: '';
     position: absolute;
-    top: 5px; left: 5px; right: 5px; bottom: 5px;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     opacity: 0;
     transition: opacity 0.2s, background-color 0.2s;
 }
@@ -635,7 +708,8 @@ body, html {
     position: absolute;
     top: 30px;
     left: 30px;
-    bottom: 120px; /* leaves room for bottom-left background selection */
+    bottom: 120px;
+    /* leaves room for bottom-left background selection */
     width: 280px;
     background-color: var(--panel-bg);
     border: 1px solid var(--panel-border);
@@ -645,7 +719,7 @@ body, html {
     flex-direction: column;
     z-index: 20;
     pointer-events: auto;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
     transition: opacity 0.3s;
 }
@@ -662,7 +736,7 @@ body, html {
     font-size: 1.5rem;
     color: #fff;
     text-align: center;
-    text-shadow: 1px 1px 0px rgba(0,0,0,0.8);
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.8);
     flex: 1;
     margin: 0;
 }
@@ -673,7 +747,7 @@ body, html {
     color: #fff;
     font-size: 1.5rem;
     cursor: pointer;
-    text-shadow: 1px 1px 0px rgba(0,0,0,0.8);
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.8);
     transition: transform 0.2s;
     padding: 0 10px;
 }
@@ -690,23 +764,27 @@ body, html {
     grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: max-content;
     gap: 10px;
-    padding-right: 5px; /* for scrollbar */
+    padding-right: 5px;
+    /* for scrollbar */
 }
 
 /* Custom Scrollbar for sticker grid */
 #sticker-grid::-webkit-scrollbar {
     width: 6px;
 }
+
 #sticker-grid::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
+
 #sticker-grid::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.5);
+    background: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
 }
+
 #sticker-grid::-webkit-scrollbar-thumb:hover {
-    background: rgba(255,255,255,0.8);
+    background: rgba(255, 255, 255, 0.8);
 }
 
 .sticker-item {
@@ -715,7 +793,7 @@ body, html {
     object-fit: contain;
     cursor: grab;
     transition: transform 0.2s;
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.3));
 }
 
 .sticker-item:active {
@@ -730,7 +808,8 @@ body, html {
     position: absolute;
     pointer-events: auto;
     cursor: move;
-    z-index: 25; /* higher than placed-frame */
+    z-index: 25;
+    /* higher than placed-frame */
     /* width/height set dynamically based on image size or default */
 }
 
@@ -738,7 +817,8 @@ body, html {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    pointer-events: none; /* Let drag events hit the parent container */
+    pointer-events: none;
+    /* Let drag events hit the parent container */
 }
 
 .placed-sticker.locked {
@@ -761,19 +841,25 @@ body, html {
     right: -12px;
     cursor: nwse-resize;
 }
+
 .resize-handle::after {
     content: '';
     position: absolute;
-    top: 6px; left: 6px; right: 6px; bottom: 6px;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     opacity: 0;
     transition: opacity 0.2s, background-color 0.2s;
 }
+
 .placed-sticker:hover .resize-handle::after {
     opacity: 1;
 }
+
 .resize-handle:hover::after {
     background-color: #feca57;
     transform: scale(1.1);
@@ -797,10 +883,11 @@ body, html {
     justify-content: center;
     align-items: center;
     color: white;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     z-index: 50;
     transition: transform 0.2s, background-color 0.2s;
-    pointer-events: none; /* Let drag elements hover above without blocking */
+    pointer-events: none;
+    /* Let drag elements hover above without blocking */
 }
 
 #trash-can.drag-over {

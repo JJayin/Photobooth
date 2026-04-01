@@ -48,6 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let cameraStream = null;
 
     function adjustZoom() {
+        const container = document.getElementById('app-master-container');
+        if (!container) return;
+        
+        // Use true window dimensions
         const containerRatio = 4 / 3;
         const windowRatio = window.innerWidth / window.innerHeight;
         
@@ -61,7 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
             scale = targetW / 1200;
         }
         
-        document.body.style.zoom = scale;
+        container.style.transform = `scale(${scale})`;
+        container.style.transformOrigin = 'center center';
     }
 
     async function init() {
@@ -208,9 +213,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getRelativeCoords(clientX, clientY) {
         const rect = appMasterContainer.getBoundingClientRect();
+        const scale = rect.width / appMasterContainer.offsetWidth;
         return {
-            x: clientX - rect.left,
-            y: clientY - rect.top
+            x: (clientX - rect.left) / scale,
+            y: (clientY - rect.top) / scale
         };
     }
 
@@ -319,8 +325,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const initialY = e.clientY;
             
             function onMouseMove(ev) {
-                const dx = ev.clientX - initialX;
-                const dy = ev.clientY - initialY;
+                const scale = appMasterContainer.getBoundingClientRect().width / appMasterContainer.offsetWidth;
+                const dx = (ev.clientX - initialX) / scale;
+                const dy = (ev.clientY - initialY) / scale;
                 const dist = Math.max(dx, dy);
                 
                 let newWidth = initialWidth + dist;
@@ -679,8 +686,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             console.log("Invoking html2canvas...");
             
-            const currentZoom = document.body.style.zoom;
-            document.body.style.zoom = 1;
+            // Explicitly force html2canvas to render the unscaled base layout natively
+            const prevTransform = appMasterContainer.style.transform;
+            appMasterContainer.style.transform = 'none';
             
             html2canvas(appMasterContainer, {
                 useCORS: true,
@@ -689,7 +697,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 logging: true,
                 allowTaint: true
             }).then(canvas => {
-                document.body.style.zoom = currentZoom;
+                appMasterContainer.style.transform = prevTransform;
                 console.log("Canvas generated successfully. Size:", canvas.width, "x", canvas.height);
                 
                 // Restore controls
@@ -723,7 +731,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }).catch(err => {
                 console.error("Error generating collage with html2canvas:", err);
-                document.body.style.zoom = currentZoom;
+                appMasterContainer.style.transform = prevTransform;
                 // restore opacity
                 if (stickerPanel) stickerPanel.style.opacity = '1';
                 if (am) am.style.opacity = '1';
