@@ -22,7 +22,6 @@ body, html {
     overflow: hidden;
     background-color: var(--primary-bg);
     color: #333;
-    zoom: 0.9;
 }
 
 /* Start Screen (Bounded by 4:3) */

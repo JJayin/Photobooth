@@ -47,7 +47,28 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let cameraStream = null;
 
+    function adjustZoom() {
+        const containerRatio = 4 / 3;
+        const windowRatio = window.innerWidth / window.innerHeight;
+        
+        let scale = 1;
+        const targetW = window.innerWidth * 0.95;
+        const targetH = window.innerHeight * 0.95;
+        
+        if (windowRatio > containerRatio) {
+            scale = targetH / 900;
+        } else {
+            scale = targetW / 1200;
+        }
+        
+        if (scale > 1.2) scale = 1.2; 
+        document.body.style.zoom = scale;
+    }
+
     async function init() {
+        adjustZoom();
+        window.addEventListener('resize', adjustZoom);
+
         setupBackgroundButtons();
         setupColorChanger();
         setupDragAndDrop();
@@ -658,6 +679,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         setTimeout(() => {
             console.log("Invoking html2canvas...");
+            
+            const currentZoom = document.body.style.zoom;
+            document.body.style.zoom = 1;
+            
             html2canvas(appMasterContainer, {
                 useCORS: true,
                 backgroundColor: null,
@@ -665,6 +690,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 logging: true,
                 allowTaint: true
             }).then(canvas => {
+                document.body.style.zoom = currentZoom;
                 console.log("Canvas generated successfully. Size:", canvas.width, "x", canvas.height);
                 
                 // Restore controls
@@ -698,6 +724,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }).catch(err => {
                 console.error("Error generating collage with html2canvas:", err);
+                document.body.style.zoom = currentZoom;
                 // restore opacity
                 if (stickerPanel) stickerPanel.style.opacity = '1';
                 if (am) am.style.opacity = '1';
